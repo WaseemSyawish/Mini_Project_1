@@ -99,20 +99,31 @@
         }
         
         nav ul {
-            display: flex;
-            list-style: none;
-            gap: 2.5rem;
-        }
-        
-        nav ul li a {
-            text-decoration: none;
-            color: var(--text-color);
-            font-weight: 500;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative;
-            padding: 5px 0;
+        display: flex;
+        list-style: none;
+        gap: 2.5rem;
+        align-items: center;
+        height: 100%; 
         }
 
+        nav ul li {
+        display: flex;
+        align-items: center;
+        height: 100%;
+        }
+
+        nav ul li a {
+        display: flex;
+        align-items: center;
+        height: 100%;
+        text-decoration: none;
+        color: var(--text-color);
+        font-weight: 500;
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        position: relative;
+        padding: 0 5px; 
+        
+    }
         nav ul li a::after {
             content: '';
             position: absolute;
@@ -867,6 +878,69 @@
             background-color: var(--secondary-color);
             transform: translateY(-8px) scale(1.1);
             box-shadow: 0 10px 25px rgba(94, 23, 235, 0.4);
+        }
+
+        .theme-toggle {
+        background: none;
+        border: none;
+        color: var(--text-color);
+        cursor: pointer;
+        font-size: 1.2rem;
+        padding: 0.5rem;
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: rgba(108, 66, 228, 0.1);
+        position: relative;
+        overflow: hidden;
+        }
+
+        .theme-toggle:hover {
+            background-color: rgba(108, 66, 228, 0.2);
+            transform: translateY(-2px) rotate(5deg);
+            box-shadow: 0 5px 15px rgba(108, 66, 228, 0.2);
+        }
+
+        .theme-toggle:active {
+            transform: translateY(0) rotate(0deg);
+        }
+
+        /* Icon styles */
+        .theme-toggle i {
+            transition: all 0.3s ease;
+        }
+
+        [data-theme="dark"] .theme-toggle i.fa-moon {
+            display: none;
+        }
+
+        [data-theme="dark"] .theme-toggle i.fa-sun {
+            display: block;
+        }
+
+        .theme-toggle i.fa-sun {
+            display: none;
+        }
+
+        /* Add ripple effect on click */
+        .theme-toggle::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: rgba(108, 66, 228, 0.2);
+            border-radius: 50%;
+            transform: scale(0);
+            transition: transform 0.3s ease;
+        }
+
+        .theme-toggle:active::after {
+            transform: scale(1.5);
+            opacity: 0;
         }
 
         /* Dark mode specific styles for contact and portfolio sections */
