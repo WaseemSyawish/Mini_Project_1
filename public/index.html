@@ -869,79 +869,91 @@
             box-shadow: 0 10px 25px rgba(94, 23, 235, 0.4);
         }
 
-        [data-theme="dark"] body {
+        /* Dark mode specific styles for contact and portfolio sections */
+        [data-theme="dark"] #contact,
+        [data-theme="dark"] #portfolio {
         background-color: var(--bg-color);
-        color: var(--text-color);
         }
 
-        [data-theme="dark"] .form-control {
-            background-color: var(--card-bg);
-            border-color: var(--text-color);
+        [data-theme="dark"] .section-title h2 {
             color: var(--text-color);
         }
 
-        [data-theme="dark"] .portfolio-item {
-            background-color: var(--card-bg);
-            box-shadow: 0 15px 30px var(--shadow-color);
-        }
-
-        [data-theme="dark"] .resume-tab {
-            background-color: var(--card-bg);
+        [data-theme="dark"] .section-title p {
             color: var(--text-color);
         }
 
-        [data-theme="dark"] .skill-bar {
-            background-color: var(--card-bg);
+        [data-theme="dark"] .contact-text h4,
+        [data-theme="dark"] .contact-info p,
+        [data-theme="dark"] .contact-text p {
+            color: var(--text-color);
         }
 
-        [data-theme="dark"] .contact-icon {
-            background-color: var(--card-bg);
+        [data-theme="dark"] .form-group label {
+            color: var(--text-color);
         }
 
+        [data-theme="dark"] .contact-detail p {
+            color: var(--text-color) !important;
+        }
+
+        [data-theme="dark"] .portfolio-overlay {
+            background: linear-gradient(0deg, rgba(94, 23, 235, 0.98) 0%, rgba(140, 84, 255, 0.98) 100%);
+        }
+
+        [data-theme="dark"] .filter-btn {
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            border-color: var(--primary-color);
+        }
+
+        [data-theme="dark"] .filter-btn:hover,
+        [data-theme="dark"] .filter-btn.active {
+            background-color: var(--primary-color);
+            color: var(--light-color);
+        }
+
+        /* Update text colors for better visibility in dark mode */
+        [data-theme="dark"] p {
+            color: #e1e1e1;
+        }
+
+        [data-theme="dark"] .about-text p {
+            color: #e1e1e1;
+        }
+
+        [data-theme="dark"] .stat-item p {
+            color: #e1e1e1;
+        }
+
+        [data-theme="dark"] .form-control::placeholder {
+            color: #888;
+        }
+
+        [data-theme="dark"] .resume-item p,
+        [data-theme="dark"] .resume-item li {
+            color: #e1e1e1;
+        }
+
+        [data-theme="dark"] .skill-name {
+            color: #e1e1e1;
+        }
+
+        /* Footer dark mode adjustments */
         [data-theme="dark"] footer {
-            background-color: var(--section-bg);
+            background-color: #1a1a1a;
         }
 
-        /* Smooth transitions for theme switching */
-        body, * {
-            transition: background-color 0.3s ease, 
-                        color 0.3s ease, 
-                        border-color 0.3s ease, 
-                        box-shadow 0.3s ease;
+        [data-theme="dark"] .footer-col p {
+            color: #e1e1e1;
         }
 
-        .theme-toggle {
-            background: none;
-            border: none;
-            color: var(--text-color);
-            cursor: pointer;
-            font-size: 1.2rem;
-            padding: 0.5rem;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: rgba(108, 66, 228, 0.1);
+        [data-theme="dark"] .footer-links a {
+            color: #e1e1e1;
         }
 
-        .theme-toggle:hover {
-            background-color: rgba(108, 66, 228, 0.2);
-            transform: translateY(-2px);
-        }
-
-        [data-theme="dark"] .alert-success {
-            background-color: rgba(40, 167, 69, 0.2);
-            border-color: rgba(40, 167, 69, 0.4);
-            color: #28a745;
-        }
-
-        [data-theme="dark"] .alert-error {
-            background-color: rgba(220, 53, 69, 0.2);
-            border-color: rgba(220, 53, 69, 0.4);
-            color: #dc3545;
+        [data-theme="dark"] .footer-links a:hover {
+            color: var(--primary-color);
         }
 
         /* Animations */
