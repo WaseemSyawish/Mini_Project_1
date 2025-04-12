@@ -6,8 +6,8 @@
     <title>Jane Doe | Portfolio</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">    
     <style>
-        /* Root Variables */
         :root {
+            /* Light Theme Variables */
             --primary-color: #6c42e4;
             --secondary-color: #8c6ff0;
             --text-color: #333;
@@ -15,6 +15,25 @@
             --dark-color: #222;
             --accent-color: #f8f9fa;
             --border-radius: 10px;
+            --bg-color: #fff;
+            --section-bg: #f9f9ff;
+            --card-bg: #fff;
+            --header-bg: #fff;
+            --shadow-color: rgba(0,0,0,0.1);
+        }
+
+        [data-theme="dark"] {
+            --primary-color: #8c6ff0;
+            --secondary-color: #6c42e4;
+            --text-color: #e1e1e1;
+            --light-color: #222;
+            --dark-color: #fff;
+            --accent-color: #1a1a1a;
+            --bg-color: #121212;
+            --section-bg: #1a1a1a;
+            --card-bg: #2a2a2a;
+            --header-bg: #1a1a1a;
+            --shadow-color: rgba(0,0,0,0.3);
         }
 
         * {
@@ -850,6 +869,81 @@
             box-shadow: 0 10px 25px rgba(94, 23, 235, 0.4);
         }
 
+        [data-theme="dark"] body {
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        }
+
+        [data-theme="dark"] .form-control {
+            background-color: var(--card-bg);
+            border-color: var(--text-color);
+            color: var(--text-color);
+        }
+
+        [data-theme="dark"] .portfolio-item {
+            background-color: var(--card-bg);
+            box-shadow: 0 15px 30px var(--shadow-color);
+        }
+
+        [data-theme="dark"] .resume-tab {
+            background-color: var(--card-bg);
+            color: var(--text-color);
+        }
+
+        [data-theme="dark"] .skill-bar {
+            background-color: var(--card-bg);
+        }
+
+        [data-theme="dark"] .contact-icon {
+            background-color: var(--card-bg);
+        }
+
+        [data-theme="dark"] footer {
+            background-color: var(--section-bg);
+        }
+
+        /* Smooth transitions for theme switching */
+        body, * {
+            transition: background-color 0.3s ease, 
+                        color 0.3s ease, 
+                        border-color 0.3s ease, 
+                        box-shadow 0.3s ease;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+            font-size: 1.2rem;
+            padding: 0.5rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(108, 66, 228, 0.1);
+        }
+
+        .theme-toggle:hover {
+            background-color: rgba(108, 66, 228, 0.2);
+            transform: translateY(-2px);
+        }
+
+        [data-theme="dark"] .alert-success {
+            background-color: rgba(40, 167, 69, 0.2);
+            border-color: rgba(40, 167, 69, 0.4);
+            color: #28a745;
+        }
+
+        [data-theme="dark"] .alert-error {
+            background-color: rgba(220, 53, 69, 0.2);
+            border-color: rgba(220, 53, 69, 0.4);
+            color: #dc3545;
+        }
+
         /* Animations */
         @keyframes float {
             0% { transform: translateY(0px) rotate(0deg); }
@@ -959,6 +1053,11 @@
                 <button class="mobile-nav-toggle"><i class="fas fa-bars"></i></button>
                 <nav>
                     <ul id="navbar">
+                        <li>
+                            <button id="theme-toggle" class="theme-toggle">
+                                <i class="fas fa-moon"></i>
+                            </button>
+                        </li>
                         <li><a href="#home">Home</a></li>
                         <li><a href="#about">About</a></li>
                         <li><a href="#portfolio">Portfolio</a></li>
@@ -1404,6 +1503,46 @@
         if ($('#navbar').hasClass('active')) {
             $('#navbar').removeClass('active');
             $('.mobile-nav-toggle i').removeClass('fa-times').addClass('fa-bars');
+        }
+    });
+
+    const themeToggle = document.getElementById('theme-toggle');
+    const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+
+    // Function to set theme
+    function setTheme(theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+        localStorage.setItem('theme', theme);
+        
+        // Update icon
+        const icon = themeToggle.querySelector('i');
+        if (theme === 'dark') {
+            icon.classList.remove('fa-moon');
+            icon.classList.add('fa-sun');
+        } else {
+            icon.classList.remove('fa-sun');
+            icon.classList.add('fa-moon');
+        }
+    }
+
+    // Check for saved user preference, first in localStorage, then system preference
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+        setTheme(savedTheme);
+    } else {
+        setTheme(prefersDarkScheme.matches ? 'dark' : 'light');
+    }
+
+    // Listen for theme toggle button click
+    themeToggle.addEventListener('click', () => {
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        setTheme(currentTheme === 'dark' ? 'light' : 'dark');
+    });
+
+    // Listen for system theme changes
+    prefersDarkScheme.addListener((e) => {
+        if (!localStorage.getItem('theme')) {
+            setTheme(e.matches ? 'dark' : 'light');
         }
     });
     
