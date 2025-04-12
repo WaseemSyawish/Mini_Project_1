@@ -1578,6 +1578,43 @@
                 animateNumbers();
             }, 1000);
         });
+
+        document.addEventListener('DOMContentLoaded', function() {
+  // Get all skill progress bars
+  const skillBars = document.querySelectorAll('.skill-progress');
+  
+  // Set initial width to 0
+  skillBars.forEach(bar => {
+    bar.style.width = '0';
+  });
+  
+  // Function to check if element is in viewport
+  function isInViewport(element) {
+    const rect = element.getBoundingClientRect();
+    return (
+      rect.top <= (window.innerHeight || document.documentElement.clientHeight) &&
+      rect.bottom >= 0
+    );
+  }
+  
+  // Function to animate skills when they come into view
+  function animateSkills() {
+    skillBars.forEach(bar => {
+      if (isInViewport(bar)) {
+        // Get the percentage from the parent's previous sibling (skill-name)
+        const percentage = bar.parentElement.previousElementSibling.lastElementChild.textContent;
+        // Set the width to the percentage
+        bar.style.width = percentage;
+      }
+    });
+  }
+  
+  // Run once on page load
+  setTimeout(animateSkills, 300);
+  
+  // Run on scroll
+  window.addEventListener('scroll', animateSkills);
+});
     </script>
 </body>
 </html>
