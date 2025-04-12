@@ -1407,213 +1407,157 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
         $(document).ready(function() {
-            // Mobile Navigation Toggle
-            $('.mobile-nav-toggle').click(function() {
-                $('#navbar').toggleClass('active');
-                $(this).find('i').toggleClass('fa-bars fa-times');
+    $('.mobile-nav-toggle').click(function() {
+        $('#navbar').toggleClass('active');
+        $(this).find('i').toggleClass('fa-bars fa-times');
+    });
+    
+    $('a[href^="#"]').on('click', function(e) {
+        e.preventDefault();
+        
+        var target = this.hash;
+        var $target = $(target);
+        
+        $('html, body').animate({
+            'scrollTop': $target.offset().top - 70
+        }, 800, 'swing');
+        
+        if ($('#navbar').hasClass('active')) {
+            $('#navbar').removeClass('active');
+            $('.mobile-nav-toggle i').removeClass('fa-times').addClass('fa-bars');
+        }
+    });
+    
+    $(window).scroll(function() {
+        if ($(this).scrollTop() > 100) {
+            $('#header').addClass('scrolled');
+            $('#backToTop').addClass('visible');
+        } else {
+            $('#header').removeClass('scrolled');
+            $('#backToTop').removeClass('visible');
+        }
+    });
+    
+    $('.filter-btn').click(function() {
+        var value = $(this).attr('data-filter');
+        
+        $('.filter-btn').removeClass('active');
+        $(this).addClass('active');
+        
+        if (value == 'all') {
+            $('.portfolio-item').show('1000');
+        } else {
+            $('.portfolio-item').not('[data-category="' + value + '"]').hide('1000');
+            $('.portfolio-item[data-category="' + value + '"]').show('1000');
+        }
+    });
+    
+    $('.resume-tab').click(function() {
+        var tabId = $(this).data('tab');
+        
+        $('.resume-tab').removeClass('active');
+        $(this).addClass('active');
+        
+        $('.resume-section').hide();
+        $('#' + tabId + '-section').fadeIn();
+    });
+    
+    $('.resume-section').hide();
+    $('#experience-section').show();
+    
+    function animateSkills() {
+        $('.skill-progress').each(function() {
+            var elementTop = $(this).offset().top;
+            var elementBottom = elementTop + $(this).outerHeight();
+            var viewportTop = $(window).scrollTop();
+            var viewportBottom = viewportTop + $(window).height();
+            
+            if (elementBottom > viewportTop && elementTop < viewportBottom) {
+                var width = $(this).parent().prev().find('span:last-child').text();
+                $(this).css('width', width);
+            }
+        });
+    }
+    
+    $('.skill-progress').each(function() {
+        $(this).css('width', '0%');
+    });
+    
+    $(window).on('scroll', function() {
+        animateSkills();
+    });
+    
+    setTimeout(function() {
+        animateSkills();
+    }, 500);
+    
+    $('#contactForm').submit(function(e) {
+        e.preventDefault();
+        
+        $(this).hide();
+        $('<div class="alert-success"><i class="fas fa-check-circle"></i> Thank you for your message! I will get back to you soon.</div>').insertAfter(this);
+    });
+    
+    $('.portfolio-item').hover(
+        function() {
+            $(this).find('.portfolio-overlay').css('opacity', '1');
+            $(this).find('.portfolio-overlay h3, .portfolio-overlay p').css({
+                'opacity': '1',
+                'transform': 'translateY(0)'
             });
-            
-            // Smooth scrolling for navigation links
-            $('a[href^="#"]').on('click', function(e) {
-                e.preventDefault();
-                
-                var target = this.hash;
-                var $target = $(target);
-                
-                $('html, body').animate({
-                    'scrollTop': $target.offset().top - 70
-                }, 800, 'swing');
-                
-                if ($('#navbar').hasClass('active')) {
-                    $('#navbar').removeClass('active');
-                    $('.mobile-nav-toggle i').removeClass('fa-times').addClass('fa-bars');
-                }
+        },
+        function() {
+            $(this).find('.portfolio-overlay').css('opacity', '0');
+            $(this).find('.portfolio-overlay h3').css({
+                'opacity': '0',
+                'transform': 'translateY(-20px)'
             });
-            
-            // Header scroll class
-            $(window).scroll(function() {
-                if ($(this).scrollTop() > 100) {
-                    $('#header').addClass('scrolled');
-                    $('#backToTop').addClass('visible');
-                } else {
-                    $('#header').removeClass('scrolled');
-                    $('#backToTop').removeClass('visible');
-                }
+            $(this).find('.portfolio-overlay p').css({
+                'opacity': '0',
+                'transform': 'translateY(20px)'
             });
-            
-            // Portfolio filter
-            $('.filter-btn').click(function() {
-                var value = $(this).attr('data-filter');
+        }
+    );
+    
+    var counted = false;
+    function animateNumbers() {
+        if (!counted && isScrolledIntoView($('.about-stats'))) {
+            $('.stat-item h4').each(function() {
+                var $this = $(this);
+                var countTo = $this.text().replace('+', '');
                 
-                $('.filter-btn').removeClass('active');
-                $(this).addClass('active');
-                
-                if (value == 'all') {
-                    $('.portfolio-item').show('1000');
-                } else {
-                    $('.portfolio-item').not('[data-category="' + value + '"]').hide('1000');
-                    $('.portfolio-item[data-category="' + value + '"]').show('1000');
-                }
-            });
-            
-            // Resume tabs
-            $('.resume-tab').click(function() {
-                var tabId = $(this).data('tab');
-                
-                $('.resume-tab').removeClass('active');
-                $(this).addClass('active');
-                
-                $('.resume-section').hide();
-                $('#' + tabId + '-section').fadeIn();
-            });
-            
-            // Initialize (show experience tab by default)
-            $('.resume-section').hide();
-            $('#experience-section').show();
-            
-            // Skills animation on scroll
-            function animateSkills() {
-                $('.skill-progress').each(function() {
-                    var elementTop = $(this).offset().top;
-                    var elementBottom = elementTop + $(this).outerHeight();
-                    var viewportTop = $(window).scrollTop();
-                    var viewportBottom = viewportTop + $(window).height();
-                    
-                    if (elementBottom > viewportTop && elementTop < viewportBottom) {
-                        var width = $(this).data('width');
-                        $(this).css('width', width + '%');
+                $({ countNum: 0 }).animate({
+                    countNum: countTo
+                }, {
+                    duration: 2000,
+                    easing: 'swing',
+                    step: function() {
+                        $this.text(Math.floor(this.countNum) + '+');
+                    },
+                    complete: function() {
+                        $this.text(this.countNum + '+');
                     }
                 });
-            }
-            
-            // On page load, initialize skill widths to 0
-            $('.skill-progress').each(function() {
-                var width = $(this).width() / $(this).parent().width() * 100;
-                $(this).data('width', width);
-                $(this).css('width', '0%');
             });
-            
-            // Animate skills on scroll
-            $(window).on('scroll', function() {
-                animateSkills();
-            });
-            
-            // Trigger on page load
-            setTimeout(function() {
-                animateSkills();
-            }, 500);
-            
-            // Form submission
-            $('#contactForm').submit(function(e) {
-                e.preventDefault();
-                
-                // Here you would normally handle form submission via AJAX
-                // For demo purposes, we'll just show a success message
-                
-                $(this).hide();
-                $('<div class="alert-success"><i class="fas fa-check-circle"></i> Thank you for your message! I will get back to you soon.</div>').insertAfter(this);
-            });
-            
-            // Add hover effect to portfolio items
-            $('.portfolio-item').hover(
-                function() {
-                    $(this).find('.portfolio-overlay').css('opacity', '1');
-                    $(this).find('.portfolio-overlay h3, .portfolio-overlay p').css({
-                        'opacity': '1',
-                        'transform': 'translateY(0)'
-                    });
-                },
-                function() {
-                    $(this).find('.portfolio-overlay').css('opacity', '0');
-                    $(this).find('.portfolio-overlay h3').css({
-                        'opacity': '0',
-                        'transform': 'translateY(-20px)'
-                    });
-                    $(this).find('.portfolio-overlay p').css({
-                        'opacity': '0',
-                        'transform': 'translateY(20px)'
-                    });
-                }
-            );
-            
-            // Animated counter for stats on scroll
-            var counted = false;
-            function animateNumbers() {
-                if (!counted && isScrolledIntoView($('.about-stats'))) {
-                    $('.stat-item h4').each(function() {
-                        var $this = $(this);
-                        var countTo = $this.text().replace('+', '');
-                        
-                        $({ countNum: 0 }).animate({
-                            countNum: countTo
-                        }, {
-                            duration: 2000,
-                            easing: 'swing',
-                            step: function() {
-                                $this.text(Math.floor(this.countNum) + '+');
-                            },
-                            complete: function() {
-                                $this.text(this.countNum + '+');
-                            }
-                        });
-                    });
-                    counted = true;
-                }
-            }
-            
-            function isScrolledIntoView(elem) {
-                var docViewTop = $(window).scrollTop();
-                var docViewBottom = docViewTop + $(window).height();
-                var elemTop = $(elem).offset().top;
-                var elemBottom = elemTop + $(elem).height();
-                return ((elemBottom <= docViewBottom) && (elemTop >= docViewTop));
-            }
-            
-            $(window).scroll(function() {
-                animateNumbers();
-            });
-            
-            // Trigger animations on page load
-            setTimeout(function() {
-                animateNumbers();
-            }, 1000);
-        });
-
-        document.addEventListener('DOMContentLoaded', function() {
-  // Get all skill progress bars
-  const skillBars = document.querySelectorAll('.skill-progress');
-  
-  // Set initial width to 0
-  skillBars.forEach(bar => {
-    bar.style.width = '0';
-  });
-  
-  // Function to check if element is in viewport
-  function isInViewport(element) {
-    const rect = element.getBoundingClientRect();
-    return (
-      rect.top <= (window.innerHeight || document.documentElement.clientHeight) &&
-      rect.bottom >= 0
-    );
-  }
-  
-  // Function to animate skills when they come into view
-  function animateSkills() {
-    skillBars.forEach(bar => {
-      if (isInViewport(bar)) {
-        // Get the percentage from the parent's previous sibling (skill-name)
-        const percentage = bar.parentElement.previousElementSibling.lastElementChild.textContent;
-        // Set the width to the percentage
-        bar.style.width = percentage;
-      }
+            counted = true;
+        }
+    }
+    
+    function isScrolledIntoView(elem) {
+        var docViewTop = $(window).scrollTop();
+        var docViewBottom = docViewTop + $(window).height();
+        var elemTop = $(elem).offset().top;
+        var elemBottom = elemTop + $(elem).height();
+        return ((elemBottom <= docViewBottom) && (elemTop >= docViewTop));
+    }
+    
+    $(window).scroll(function() {
+        animateNumbers();
     });
-  }
-  
-  // Run once on page load
-  setTimeout(animateSkills, 300);
-  
-  // Run on scroll
-  window.addEventListener('scroll', animateSkills);
+    
+    setTimeout(function() {
+        animateNumbers();
+    }, 1000);
 });
     </script>
 </body>
