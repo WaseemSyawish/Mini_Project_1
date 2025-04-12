@@ -908,7 +908,6 @@
         </div>
     </header>
 
-    <!-- Hero Section -->
     <section id="home" class="hero">
         <div class="container">
             <div class="hero-content">
@@ -929,7 +928,7 @@
             </div>
             <div class="about-content">
                 <div class="about-image">
-                    <img src="/api/placeholder/500/600" alt="Jane Doe">
+                    <img src="photos/me.png" alt="Jane Doe">
                 </div>
                 <div class="about-text">
                     <h3>Crafting Digital Experiences</h3>
@@ -957,56 +956,59 @@
     </section>
 
     <!-- Portfolio Section -->
-    <section id="portfolio">
-        <div class="container">
-            <div class="section-title">
-                <h2>My Portfolio</h2>
-                <p>A collection of my recent work showcasing my skills and experience.</p>
+<section id="portfolio">
+    <div class="container">
+        <div class="section-title">
+            <h2>My Portfolio</h2>
+            <p>A collection of my recent work showcasing my skills and experience.</p>
+        </div>
+        
+        <div class="portfolio-filter">
+            <button class="filter-btn active">All</button>
+            <button class="filter-btn">Web Design</button>
+            <button class="filter-btn">Mobile Apps</button>
+            <button class="filter-btn">UI/UX Design</button>
+        </div>
+        
+        <div class="portfolio-grid">
+            <div class="portfolio-item">
+                <div class="portfolio-image" style="background-image: url('/api/placeholder/600/400')"></div>
+                <div class="portfolio-overlay">
+                    <h3>E-commerce Website</h3>
+                    <p>A fully responsive e-commerce platform built with React and Node.js.</p>
+                    <div class="portfolio-links">
+                        <a href="#" class="portfolio-link"><i class="fas fa-link"></i></a>
+                        <a href="#" class="portfolio-link"><i class="fas fa-search"></i></a>
+                    </div>
+                </div>
             </div>
-            
-            <div class="portfolio-filter">
-                <button class="filter-btn active">All</button>
-                <button class="filter-btn">Web Design</button>
-                <button class="filter-btn">Mobile Apps</button>
-                <button class="filter-btn">UI/UX Design</button>
+            <div class="portfolio-item">
+                <div class="portfolio-image" style="background-image: url('/api/placeholder/600/400')"></div>
+                <div class="portfolio-overlay">
+                    <h3>Personal Blog</h3>
+                    <p>A minimalist blog design with a focus on typography and readability.</p>
+                    <div class="portfolio-links">
+                        <a href="#" class="portfolio-link"><i class="fas fa-link"></i></a>
+                        <a href="#" class="portfolio-link"><i class="fas fa-search"></i></a>
+                    </div>
+                </div>
             </div>
-            
-            <div class="portfolio-grid">
-                <div class="portfolio-item">
-                    <div class="portfolio-image" style="background-image: url('/api/placeholder/600/400')"></div>
-                    <div class="portfolio-overlay">
-                        <h3>E-commerce Website</h3>
-                        <p>A fully responsive e-commerce platform built with React and Node.js.</p>
-                        <div class="portfolio-links">
-                            <a href="#" class="portfolio-link"><i class="fas fa-link"></i></a>
-                            <a href="#" class="portfolio-link"><i class="fas fa-search"></i></a>
-                        </div>
+            <div class="portfolio-item">
+                <div class="portfolio-image" style="background-image: url('/api/placeholder/600/400')"></div>
+                <div class="portfolio-overlay">
+                    <h3>Travel App</h3>
+                    <p>A mobile-first travel application with interactive maps and social features.</p>
+                    <div class="portfolio-links">
+                        <a href="#" class="portfolio-link"><i class="fas fa-link"></i></a>
+                        <a href="#" class="portfolio-link"><i class="fas fa-search"></i></a>
                     </div>
                 </div>
-                <div class="portfolio-item">
-                    <div class="portfolio-image" style="background-image: url('/api/placeholder/600/400')"></div>
-                    <div class="portfolio-overlay">
-                        <h3>Personal Blog</h3>
-                        <p>A minimalist blog design with a focus on typography and readability.</p>
-                        <div class="portfolio-links">
-                            <a href="#" class="portfolio-link"><i class="fas fa-link"></i></a>
-                            <a href="#" class="portfolio-link"><i class="fas fa-search"></i></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="portfolio-item">
-                    <div class="portfolio-image" style="background-image: url('/api/placeholder/600/400')"></div>
-                    <div class="portfolio-overlay">
-                        <h3>Travel App</h3>
-                        <p>A mobile-first travel application with interactive maps and social features.</p>
-                        <div class="portfolio-links">
-                            <a href="#" class="portfolio-link"><i class="fas fa-link"></i></a>
-                            <a href="#" class="portfolio-link"><i class="fas fa-search"></i></a>
-                        </div>
-                    </div>
-                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
-                <!-- Resume Section -->
+                    <!-- Resume Section -->
 <section id="resume">
     <div class="container">
         <div class="section-title">
@@ -1286,6 +1288,7 @@
     </div>
 </footer>
 
+<!-- JavaScript for Resume Tab Functionality -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Resume tabs functionality
@@ -1329,20 +1332,22 @@
             }
         });
         
-        // Smooth scrolling for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                const targetId = this.getAttribute('href');
-                const targetElement = document.querySelector(targetId);
-                
-                if (targetElement) {
-                    window.scrollTo({
-                        top: targetElement.offsetTop - 70,
-                        behavior: 'smooth'
-                    });
-                }
-            });
-        });
+        // Scroll animation for skill bars
+        const skillBars = document.querySelectorAll('.skill-progress');
+        const skillsSection = document.querySelector('#resume');
+        
+        const showSkills = () => {
+            const skillsTop = skillsSection.getBoundingClientRect().top;
+            const windowHeight = window.innerHeight;
+            
+            if (skillsTop < windowHeight - 100) {
+                skillBars.forEach(bar => {
+                    bar.style.width = bar.parentElement.previousElementSibling.lastElementChild.textContent;
+                });
+                window.removeEventListener('scroll', showSkills);
+            }
+        };
+        
+        window.addEventListener('scroll', showSkills);
     });
+</script>
